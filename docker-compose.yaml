@@ -10,4 +10,6 @@ services:
       - redis    
       
   redis:
-    image: redis:alpine    
+    image: redis:alpine
+    ports: 
+      - "6379:6379"

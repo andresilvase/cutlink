@@ -5,8 +5,9 @@ import (
 	"log/slog"
 	"net/http"
 
-	"github.com/andresilvase/cutlink/cmd/api/models"
 	"github.com/andresilvase/cutlink/cmd/api/utils"
+	"github.com/andresilvase/cutlink/internal/controller"
+	"github.com/andresilvase/cutlink/internal/models"
 )
 
 func ShortenLink(w http.ResponseWriter, r *http.Request) {
@@ -25,4 +26,27 @@ func ShortenLink(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	shortenedURL, err := controller.ShortenURL(fullUrl.URL)
+
+	if err != nil {
+		slog.Error(err.Error())
+		utils.SendResponse(
+			w,
+			utils.Response{
+				Error: err.Error(),
+			},
+			http.StatusInternalServerError,
+		)
+		return
+	}
+
+	response := models.ShortenedURL{
+		ShortenedURL: shortenedURL,
+	}
+
+	utils.SendResponse(
+		w,
+		utils.Response{Data: response},
+		http.StatusOK,
+	)
 }

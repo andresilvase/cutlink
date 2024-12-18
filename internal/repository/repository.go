@@ -6,6 +6,7 @@ import (
 
 	"math/rand"
 
+	"github.com/andresilvase/cutlink/internal"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -52,5 +53,5 @@ func (s repository) SaveShortenedURL(ctx context.Context, fullURL string) (strin
 		return shortenedURL, fmt.Errorf("was not possible to shorten this link now, please try again")
 	}
 
-	return shortenedURL, nil
+	return internal.BASE_URL + shortenedURL, nil
 }

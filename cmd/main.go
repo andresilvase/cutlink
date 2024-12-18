@@ -1,10 +1,7 @@
 package main
 
-import (
-	"fmt"
-)
+import "github.com/andresilvase/cutlink/cmd/api"
 
 func main() {
-	const baseUrl = "https://cutli.ink/"
-	fmt.Println(baseUrl + "")
+	api.Run()
 }

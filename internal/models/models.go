@@ -1,7 +1,7 @@
 package models
 
 type ShortenedURL struct {
-	Code string `json:"code"`
+	ShortenedURL string `json:"shortenedURL"`
 }
 
 type FullURL struct {
