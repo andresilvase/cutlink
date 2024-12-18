@@ -3,6 +3,7 @@ package repository
 import (
 	"context"
 	"fmt"
+	"log/slog"
 
 	"math/rand"
 
@@ -40,17 +41,25 @@ func (s repository) SaveShortenedURL(ctx context.Context, fullURL string) (strin
 
 	for range 100 {
 		shortenedURL = genShortenedUrl()
-		_, err := s.rdb.Get(ctx, shortenedURL).Result()
+		_, err := s.rdb.HGet(ctx, "shortener", shortenedURL).Result()
 		if err != nil {
 			if err == redis.Nil {
 				break
 			}
 			return "", err
 		}
+		shortenedURL = ""
 	}
 
 	if shortenedURL == "" {
-		return shortenedURL, fmt.Errorf("was not possible to shorten this link now, please try again")
+		slog.Error("was not possible to short this link now: limit trials reached.")
+		return shortenedURL, fmt.Errorf("was not possible to short this link now")
+	}
+
+	_, err := s.rdb.HSet(ctx, "shortener", shortenedURL, fullURL).Result()
+	if err != nil {
+		slog.Error(err.Error())
+		return "", fmt.Errorf("error %w tryna shorten this link", err)
 	}
 
 	return internal.BASE_URL + shortenedURL, nil
