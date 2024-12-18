@@ -9,7 +9,7 @@ import (
 )
 
 var store = repository.New(
-	redis.NewClient(&redis.Options{Addr: "localhost:6379"}),
+	redis.NewClient(&redis.Options{Addr: "redis:6379"}),
 )
 
 func ShortenURL(fullURL string) (string, error) {
