@@ -2,7 +2,6 @@ package controller
 
 import (
 	"context"
-	"log/slog"
 
 	"github.com/andresilvase/cutlink/internal/repository"
 	"github.com/redis/go-redis/v9"
@@ -14,12 +13,12 @@ var store = repository.New(
 
 func ShortenURL(fullURL string) (string, error) {
 	ctx := context.Background()
-	shortenedURL, err := store.SaveShortenedURL(ctx, fullURL)
 
-	if err != nil {
-		slog.Error(err.Error())
-		return "", err
-	}
+	return store.SaveShortenedURL(ctx, fullURL)
+}
 
-	return shortenedURL, nil
+func FullURL(shortenedURL string) (string, error) {
+	ctx := context.Background()
+
+	return store.FullURL(ctx, shortenedURL)
 }

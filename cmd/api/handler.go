@@ -16,7 +16,7 @@ func handler() http.Handler {
 	handler.Use(middleware.Logger)
 
 	handler.Route("/", func(r chi.Router) {
-		r.Get("/{:[a-zA-Z0-9]+}", routes.GetFullURL)
+		r.Get("/{shortenedUrl:[a-zA-Z0-9]+}", routes.FullURL)
 		r.Post("/cut", routes.ShortenLink)
 	})
 

@@ -17,6 +17,7 @@ type repository struct {
 
 type Repository interface {
 	SaveShortenedURL(ctx context.Context, fullURL string) (string, error)
+	FullURL(ctx context.Context, shortenedURL string) (string, error)
 }
 
 func New(rdb *redis.Client) Repository {
@@ -36,12 +37,12 @@ func genShortenedUrl() string {
 	return string(byts)
 }
 
-func (s repository) SaveShortenedURL(ctx context.Context, fullURL string) (string, error) {
+func (r repository) SaveShortenedURL(ctx context.Context, fullURL string) (string, error) {
 	var shortenedURL string
 
 	for range 100 {
 		shortenedURL = genShortenedUrl()
-		_, err := s.rdb.HGet(ctx, "shortener", shortenedURL).Result()
+		_, err := r.FullURL(ctx, shortenedURL)
 		if err != nil {
 			if err == redis.Nil {
 				break
@@ -56,11 +57,25 @@ func (s repository) SaveShortenedURL(ctx context.Context, fullURL string) (strin
 		return shortenedURL, fmt.Errorf("was not possible to short this link now")
 	}
 
-	_, err := s.rdb.HSet(ctx, "shortener", shortenedURL, fullURL).Result()
+	_, err := r.rdb.HSet(ctx, "shortener", shortenedURL, fullURL).Result()
 	if err != nil {
 		slog.Error(err.Error())
 		return "", fmt.Errorf("error %w tryna shorten this link", err)
 	}
 
 	return internal.BASE_URL + shortenedURL, nil
+}
+
+func (r repository) FullURL(ctx context.Context, shortenedURL string) (string, error) {
+	fullURL, err := r.rdb.HGet(ctx, "shortener", shortenedURL).Result()
+
+	if err != nil {
+		if err == redis.Nil {
+			return "", err
+		}
+		slog.Error(err.Error())
+		return "", fmt.Errorf("error %w tryna get full link", err)
+	}
+
+	return fullURL, nil
 }
