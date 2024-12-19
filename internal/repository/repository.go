@@ -2,12 +2,12 @@ package repository
 
 import (
 	"context"
-	"fmt"
 	"log/slog"
 
 	"math/rand"
 
 	"github.com/andresilvase/cutlink/internal"
+	apperrors "github.com/andresilvase/cutlink/internal/errors"
 	"github.com/redis/go-redis/v9"
 )
 
@@ -42,7 +42,7 @@ func (r repository) SaveShortenedURL(ctx context.Context, fullURL string) (strin
 
 	for range 100 {
 		shortenedURL = genShortenedUrl()
-		_, err := r.FullURL(ctx, shortenedURL)
+		_, err := r.rdb.HGet(ctx, "shortener", shortenedURL).Result()
 		if err != nil {
 			if err == redis.Nil {
 				break
@@ -53,14 +53,16 @@ func (r repository) SaveShortenedURL(ctx context.Context, fullURL string) (strin
 	}
 
 	if shortenedURL == "" {
-		slog.Error("was not possible to short this link now: limit trials reached.")
-		return shortenedURL, fmt.Errorf("was not possible to short this link now")
+		err := apperrors.LimitAttemptReached{}
+		slog.Error(err.Error())
+		return shortenedURL, err
 	}
 
 	_, err := r.rdb.HSet(ctx, "shortener", shortenedURL, fullURL).Result()
 	if err != nil {
+		err := apperrors.Unexpected{Err: err}
 		slog.Error(err.Error())
-		return "", fmt.Errorf("error %w tryna shorten this link", err)
+		return "", err
 	}
 
 	return internal.BASE_URL + shortenedURL, nil
@@ -71,10 +73,11 @@ func (r repository) FullURL(ctx context.Context, shortenedURL string) (string, e
 
 	if err != nil {
 		if err == redis.Nil {
-			return "", err
+			return "", apperrors.NotFound{}
 		}
-		slog.Error(err.Error())
-		return "", fmt.Errorf("error %w tryna get full link", err)
+		unexpectedErr := apperrors.Unexpected{Err: err}
+		slog.Error(unexpectedErr.Error())
+		return "", unexpectedErr
 	}
 
 	return fullURL, nil
