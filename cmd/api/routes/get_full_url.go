@@ -33,11 +33,10 @@ func FullURL(w http.ResponseWriter, r *http.Request) {
 		URL: fullURL,
 	}
 
-	utils.SendResponse(
+	http.Redirect(
 		w,
-		utils.Response{
-			Data: response,
-		},
-		http.StatusOK,
+		r,
+		response.URL,
+		http.StatusFound,
 	)
 }
