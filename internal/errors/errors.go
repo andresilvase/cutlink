@@ -6,6 +6,8 @@ type NotFound struct{}
 
 type LimitAttemptReached struct{}
 
+type InvalideURL struct{}
+
 type Unexpected struct {
 	Err error
 }
@@ -19,5 +21,9 @@ func (l LimitAttemptReached) Error() string {
 }
 
 func (u Unexpected) Error() string {
-	return fmt.Errorf("Unexpected error occorred: %w", u.Err).Error()
+	return fmt.Errorf("unexpected error occorred: %w", u.Err).Error()
+}
+
+func (i InvalideURL) Error() string {
+	return "Invalid URL."
 }

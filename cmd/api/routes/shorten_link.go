@@ -2,11 +2,13 @@ package routes
 
 import (
 	"encoding/json"
+	"errors"
 	"log/slog"
 	"net/http"
 
 	"github.com/andresilvase/cutlink/cmd/api/utils"
 	"github.com/andresilvase/cutlink/internal/controller"
+	apperrors "github.com/andresilvase/cutlink/internal/errors"
 	"github.com/andresilvase/cutlink/internal/models"
 )
 
@@ -29,13 +31,20 @@ func ShortenLink(w http.ResponseWriter, r *http.Request) {
 	shortenedURL, err := controller.ShortenURL(fullUrl.URL)
 
 	if err != nil {
-		slog.Error(err.Error())
+		statusCode := http.StatusInternalServerError
+		msgError := err.Error()
+		slog.Error(msgError)
+
+		if errors.As(err, &apperrors.InvalideURL{}) {
+			statusCode = http.StatusBadRequest
+		}
+
 		utils.SendResponse(
 			w,
 			utils.Response{
-				Error: err.Error(),
+				Error: msgError,
 			},
-			http.StatusInternalServerError,
+			statusCode,
 		)
 		return
 	}
