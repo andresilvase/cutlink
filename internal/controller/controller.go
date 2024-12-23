@@ -2,6 +2,7 @@ package controller
 
 import (
 	"context"
+	"log/slog"
 	"net/url"
 
 	apperrors "github.com/andresilvase/cutlink/internal/errors"
@@ -10,7 +11,7 @@ import (
 )
 
 var store = repository.New(
-	redis.NewClient(&redis.Options{Addr: "localhost:6379"}),
+	redis.NewClient(&redis.Options{Addr: "redis:6379"}),
 )
 
 func isValideURL(fullURL string) bool {
@@ -20,6 +21,7 @@ func isValideURL(fullURL string) bool {
 }
 
 func ShortenURL(fullURL string) (string, error) {
+	slog.Info(fullURL)
 	if !isValideURL(fullURL) {
 		return "", apperrors.InvalideURL{}
 	}

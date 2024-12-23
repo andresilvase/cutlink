@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: cutlink
     ports:
-      - "8080:8080"
+      - "8080:8181"
     depends_on:
       - redis    
       

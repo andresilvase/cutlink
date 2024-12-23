@@ -11,7 +11,7 @@ func Run() {
 	handler := handler()
 
 	server := &http.Server{
-		Addr:         ":1818",
+		Addr:         ":8181",
 		Handler:      handler,
 		ReadTimeout:  10 * time.Second,
 		WriteTimeout: 10 * time.Second,
