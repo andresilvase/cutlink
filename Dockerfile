@@ -10,7 +10,7 @@ RUN go mod tidy
 COPY . .
 
 # Build the Go binary with optimization flags
-RUN go build -trimpath -ldflags="-s -w" -o cutlink ./cmd
+RUN GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o cutlink ./cmd
 
 # Stage 2: Final image
 FROM gcr.io/distroless/base
