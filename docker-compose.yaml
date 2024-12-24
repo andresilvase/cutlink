@@ -7,9 +7,18 @@ services:
     ports:
       - "8080:8181"
     depends_on:
-      - redis    
+      - redis
+    networks:
+     - cutlink-network
       
   redis:
     image: redis:alpine
+    container_name: redis
     ports: 
       - "6379:6379"
+    networks:
+      - cutlink-network
+
+networks:
+  cutlink-network:
+    driver: bridge
