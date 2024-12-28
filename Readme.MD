@@ -40,7 +40,7 @@ Create a `.env` file in the project root with the following variables:
 ```env
 REDIS_HOST=redis
 REDIS_PORT=6379
-APP_PORT=8181
+APP_PORT=8080
 ```
 
 ### Build and Run the Application
@@ -51,7 +51,7 @@ APP_PORT=8181
 make run
 ```
 
-2. Access the application at `http://localhost:8181`.
+2. Access the application at `http://localhost:8080`.
 
 ## API Endpoints
 

@@ -1,24 +1,26 @@
 services:
   app:
     build:
-      context: .
-      dockerfile: Dockerfile      
-    container_name: cutlink
+      context: .      
+    container_name: cutlink-app
+    image: cutlink-app
     platform: linux/amd64
     ports:
-      - "8080:8181"
+      - "8080:8080"
     depends_on:
       - redis
     networks:
-     - cutlink-network
+     - cutlink-network    
+    restart: always
       
   redis:
     image: redis:alpine
-    container_name: redis
+    container_name: cutlink-redis
     ports: 
       - "6379:6379"
     networks:
       - cutlink-network
+    restart: always
     volumes:
       - redis-data:/data  # Volume definition to persist Redis data
 

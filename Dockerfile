@@ -10,15 +10,17 @@ RUN go mod tidy
 COPY . .
 
 # Build the Go binary with optimization flags
-RUN GOOS=linux GOARCH=amd64 go build -trimpath -ldflags="-s -w" -o cutlink ./cmd
+RUN go build -trimpath -ldflags="-s -w" -o cutlink ./cmd
 
 # Stage 2: Final image
-FROM gcr.io/distroless/base
+FROM alpine:latest
 
 # Set the working directory inside the container
 WORKDIR /root/
 
 # Copy the binary from the builder stage
 COPY --from=builder /app/cutlink .
+
+EXPOSE 8080
 
 CMD ["./cutlink"]

@@ -9,3 +9,8 @@
 # Ignore local IDE files
 .vscode
 .idea
+
+atd.json
+script-outputs.sh
+script.sh
+test.txt

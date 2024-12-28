@@ -7,8 +7,8 @@ default: run
 run:
 	@docker compose up -d
 	
-it-all:
-	docker-compose build --no-cache;docker compose up -d
+up:
+	docker-compose up --build --force-recreate -d
 
 down:
 	docker-compose down
