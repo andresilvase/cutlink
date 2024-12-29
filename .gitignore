@@ -1,6 +1,4 @@
 atd.json
-script-outputs.sh
-script.sh
-test.txt
 only-redis-compose.yaml
 *.txt
+*.sh
