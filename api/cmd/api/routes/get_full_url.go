@@ -54,7 +54,7 @@ func FullURL(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(
 				w,
 				r,
-				fmt.Sprintf("%s%s", internal.BASE_URL, "/not-found/"),
+				fmt.Sprintf("%s%s", internal.BASE_URL, "not-found/"),
 				http.StatusFound,
 			)
 		}

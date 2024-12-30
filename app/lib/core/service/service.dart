@@ -9,12 +9,9 @@ class CutlinkService {
     if (apiUrl == null) return (false, null);
 
     Dio dio = Dio();
-    Uri uri = Uri.parse("${apiUrl}cut");
-    print(uri.toString());
+    Uri uri = Uri.parse("$apiUrl/cut");
 
     final response = await dio.postUri(uri, data: fullURL.toJson());
-
-    print(response.data);
 
     return (true, response.data);
   }

@@ -1,17 +1,44 @@
 import 'package:app/core/service/service.dart';
 import 'package:app/core/model/shortened_url.dart';
 import 'package:app/core/model/full_url.dart';
+import 'package:get/get.dart';
 
 class ShortenController {
+  final Rx<ShortenedURL> _shortenedURL = ShortenedURL().obs;
   final CutlinkService _service = CutlinkService();
+  final RxBool _loading = false.obs;
+  final RxBool _hasError = false.obs;
 
-  Future<(bool, ShortenedURL?)> shorten(FullUrl fullURL) async {
-    (bool success, dynamic jsonData) response = await _service.shorten(fullURL);
+  String? get shortenedURL => _shortenedURL.value.data?.shortenedUrl;
+  bool get hasError => _hasError.value;
+  bool get loading => _loading.value;
 
-    if (response.$1) {
-      return (response.$1, ShortenedURL.fromJson(response.$2));
+  void resetLoding() => _loading(false);
+  void setLoding() => _loading(true);
+
+  void resetError() => _hasError(false);
+  void setError() => _hasError(true);
+
+  Future<void> shorten(String url) async {
+    final RegExp regExp = RegExp(
+      r"^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$",
+    );
+
+    if (!regExp.hasMatch(url)) {
+      setError();
+      return;
     } else {
-      return (response.$1, null);
+      resetError();
+
+      FullUrl fullURL = FullUrl(url: url);
+
+      setLoding();
+      (bool success, dynamic jsonData) response = await _service.shorten(fullURL);
+      resetLoding();
+
+      if (response.$1) {
+        _shortenedURL.value = ShortenedURL.fromJson(response.$2);
+      }
     }
   }
 }
