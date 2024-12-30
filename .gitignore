@@ -3,3 +3,4 @@ only-redis-compose.yaml
 *.txt
 *.sh
 .vscode
+*.env

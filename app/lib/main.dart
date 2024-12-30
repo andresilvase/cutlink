@@ -1,7 +1,15 @@
-import 'package:url_launcher/url_launcher.dart';
+import 'package:app/core/init_dependencies.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:app/core/routes/router.dart';
+import 'package:app/core/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load(fileName: ".env");
+
+  initDependencies();
+
   runApp(const MyApp());
 }
 
@@ -10,38 +18,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return const GetMaterialApp(
+      onGenerateRoute: AppRouter.onGenerateroute,
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  String? getQueryParameter(String name) {
-    return Uri.base.path;
-  }
-
-  Future<void> _launchUrl(Uri url) async {
-    if (!await launchUrl(url, webOnlyWindowName: "_self")) {
-      throw Exception('Could not launch $url');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      ),
-      body: Center(),
+      initialRoute: Routes.root,
     );
   }
 }
