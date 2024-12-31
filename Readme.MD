@@ -1,4 +1,4 @@
-# CutLink  ✂🔗
+# ShortCut Link  ✂🔗
 
 CutLink is a lightweight and efficient URL shortener application built using Go, Redis, and Docker. This project aims to provide a simple and scalable solution for creating and managing shortened URLs.
 
