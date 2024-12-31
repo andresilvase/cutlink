@@ -3,7 +3,6 @@ import 'package:cutlink/core/admob/admob_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'dart:io';
 
 class AdBanner extends StatefulWidget {
   const AdBanner({
@@ -33,7 +32,7 @@ class _AdBanner300x60State extends State<AdBanner> {
       Orientation.landscape,
     );
 
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (!kIsWeb) {
       _bannerAd = BannerAd(
         listener: AdMobUtils.bannerAdListener(onAdLoaded: (ad) {
           if (kDebugMode) debugPrint('TiuTiuApp: Banner Ad ${ad.adUnitId} Load.');
@@ -54,7 +53,7 @@ class _AdBanner300x60State extends State<AdBanner> {
 
   @override
   Widget build(BuildContext context) {
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (!kIsWeb) {
       return Visibility(
         visible: !_bannerAdFailedToLoad,
         child: Container(
@@ -74,7 +73,7 @@ class _AdBanner300x60State extends State<AdBanner> {
 
   @override
   void dispose() {
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (!kIsWeb) {
       _bannerAd.dispose();
     }
     super.dispose();

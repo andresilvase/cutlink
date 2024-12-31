@@ -2,6 +2,7 @@ import 'package:cutlink/features/shorten/controller/shorten_controller.dart';
 import 'package:cutlink/core/admob/constants/ad_unit_ids.dart';
 import 'package:cutlink/core/admob/widgets/ad_banner.dart';
 import 'package:cutlink/core/widgets/blur.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -77,7 +78,7 @@ class _ShortenState extends State<Shorten> {
           child: ListView(
             children: [
               const AdBanner(adId: AdUnitIds.bannerTop),
-              SizedBox(height: Get.width * 0.3),
+              SizedBox(height: kIsWeb ? Get.height / 3 : Get.width * 0.3),
               _title(),
               _textField(),
               _shortenButton(),

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:cutlink/core/init_dependencies.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -9,7 +10,10 @@ import 'package:get/get.dart';
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
   WidgetsFlutterBinding.ensureInitialized();
-  MobileAds.instance.initialize();
+
+  if (!kIsWeb) {
+    MobileAds.instance.initialize();
+  }
 
   initDependencies();
 
