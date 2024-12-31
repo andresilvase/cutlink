@@ -1,11 +1,11 @@
 {
-    "name": "app",
-    "short_name": "app",
+    "name": "ShortCut Link",
+    "short_name": "ShortCut Link",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#4489ff",
+    "theme_color": "#4489ff",
+    "description": "Shorten your URLs with our fast, reliable, and free tool. Customize links and track clicks effortlessly",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

@@ -1,5 +1,5 @@
-import 'package:app/core/routes/routes.dart';
-import 'package:app/features/shorten/views/shorten.dart';
+import 'package:cutlink/features/shorten/views/shorten.dart';
+import 'package:cutlink/core/routes/routes.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {

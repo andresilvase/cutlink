@@ -1,5 +1,5 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:app/core/model/full_url.dart';
+import 'package:cutlink/core/model/full_url.dart';
 import 'package:dio/dio.dart';
 
 class CutlinkService {
@@ -8,10 +8,16 @@ class CutlinkService {
 
     if (apiUrl == null) return (false, null);
 
-    Dio dio = Dio();
-    Uri uri = Uri.parse("$apiUrl/cut");
+    Dio dio = Dio(
+      BaseOptions(
+        baseUrl: apiUrl,
+        validateStatus: (status) {
+          return status! < 500;
+        },
+      ),
+    );
 
-    final response = await dio.postUri(uri, data: fullURL.toJson());
+    final response = await dio.post("/cut", data: fullURL.toJson());
 
     return (true, response.data);
   }

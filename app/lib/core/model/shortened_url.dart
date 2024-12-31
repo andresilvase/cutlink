@@ -1,10 +1,12 @@
 class ShortenedURL {
+  String? error;
   Data? data;
 
-  ShortenedURL({this.data});
+  ShortenedURL({this.data, this.error});
 
   ShortenedURL.fromJson(Map<String, dynamic> json) {
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    error = json['error'];
   }
 
   Map<String, dynamic> toJson() {
@@ -12,6 +14,7 @@ class ShortenedURL {
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
+    data['error'] = error;
     return data;
   }
 }

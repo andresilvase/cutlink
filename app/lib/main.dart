@@ -1,7 +1,7 @@
-import 'package:app/core/init_dependencies.dart';
+import 'package:cutlink/core/init_dependencies.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:app/core/routes/router.dart';
-import 'package:app/core/routes/routes.dart';
+import 'package:cutlink/core/routes/router.dart';
+import 'package:cutlink/core/routes/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

@@ -1,6 +1,6 @@
-import 'package:app/core/service/service.dart';
-import 'package:app/core/model/shortened_url.dart';
-import 'package:app/core/model/full_url.dart';
+import 'package:cutlink/core/model/shortened_url.dart';
+import 'package:cutlink/core/service/service.dart';
+import 'package:cutlink/core/model/full_url.dart';
 import 'package:get/get.dart';
 
 class ShortenController {
@@ -10,8 +10,15 @@ class ShortenController {
   final RxBool _hasError = false.obs;
 
   String? get shortenedURL => _shortenedURL.value.data?.shortenedUrl;
+  String? get errr => _shortenedURL.value.error;
   bool get hasError => _hasError.value;
   bool get loading => _loading.value;
+
+  void reset() {
+    _shortenedURL.value = ShortenedURL();
+    resetLoding();
+    resetError();
+  }
 
   void resetLoding() => _loading(false);
   void setLoding() => _loading(true);
@@ -38,6 +45,9 @@ class ShortenController {
 
       if (response.$1) {
         _shortenedURL.value = ShortenedURL.fromJson(response.$2);
+        if (_shortenedURL.value.error != null) {
+          setError();
+        }
       }
     }
   }

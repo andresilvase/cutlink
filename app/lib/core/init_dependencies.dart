@@ -1,5 +1,5 @@
-import 'package:app/features/shorten/controller/shorten_bindings.dart';
-import 'package:app/core/model/binding.dart';
+import 'package:cutlink/features/shorten/controller/shorten_bindings.dart';
+import 'package:cutlink/core/model/binding.dart';
 
 List<Binding> bindings = [
   ShortenBindings(),
