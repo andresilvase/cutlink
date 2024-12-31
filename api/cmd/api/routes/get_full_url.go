@@ -12,7 +12,7 @@ import (
 	"github.com/andresilvase/cutlink/internal/controller"
 	apperrors "github.com/andresilvase/cutlink/internal/errors"
 	"github.com/andresilvase/cutlink/internal/models"
-	"github.com/go-chi/chi"
+	"github.com/go-chi/chi/v5"
 )
 
 func getFullURL(r *http.Request) string {
@@ -27,13 +27,16 @@ func getFullURL(r *http.Request) string {
 func FullURL(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
 
+	shortenedUrlParameter := chi.URLParam(r, "shortenedUrl")
+
 	pathRequest := getFullURL(r)
 	isAPIEndpoint := strings.Contains(pathRequest, "api")
 
-	shortenedUrlParameter := chi.URLParam(r, "shortenedUrl")
+	fmt.Println(shortenedUrlParameter)
+	fmt.Println(pathRequest)
 
 	fullURL, err := controller.FullURL(shortenedUrlParameter)
-	baseUrl := os.Getenv("SHORTEN_BASE_URL")
+	baseUrl := os.Getenv("SHORTENED_BASE_URL")
 
 	if err != nil {
 		statusCode := http.StatusInternalServerError
@@ -56,7 +59,7 @@ func FullURL(w http.ResponseWriter, r *http.Request) {
 				w,
 				r,
 				fmt.Sprintf("%s%s", baseUrl, "not-found/"),
-				http.StatusFound,
+				http.StatusMovedPermanently,
 			)
 		}
 

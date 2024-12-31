@@ -67,7 +67,7 @@ func (r repository) SaveShortenedURL(ctx context.Context, fullURL string) (strin
 		return "", err
 	}
 
-	baseUrl := os.Getenv("SHORTEN_BASE_URL")
+	baseUrl := os.Getenv("SHORTENED_BASE_URL")
 
 	return baseUrl + shortenedURL, nil
 }

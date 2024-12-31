@@ -65,23 +65,6 @@ make up
 - **GET /{slug}**  
   Redirects to the original URL.
 
-## Folder Structure
-
-```plaintext
-cutlink/
-├── Dockerfile           # Docker image setup
-├── docker-compose.yaml  # Container orchestration
-├── .env.example         # Environment variable template
-├── internal/            # Application logic
-│   ├── controller/        # API route controller handlers
-│   ├── errros/          # Custom errors
-│   └── models/          # Domain models
-│   └── repository/      # Layer that handle storage
-│   └── constants.go     # App constant values
-├── cmd/                 # Application entry point
-├── README.md            # Project documentation
-└── tests/               # Unit and integration tests
-```
 
 ## Deployment
 
