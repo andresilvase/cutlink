@@ -33,40 +33,32 @@ git clone https://github.com/andresilvase/cutlink.git
 cd cutlink
 ```
 
-### Configure Environment Variables
-
-Create a `.env` file in the project root with the following variables:
-
-```env
-REDIS_HOST=redis
-REDIS_PORT=6379
-APP_PORT=8080
-```
-
 ### Build and Run the Application
 
 1. Build and start the services:
 
 ```bash
-make run
+make up
 ```
 
 2. Access the application at `http://localhost:8080`.
 
 ## API Endpoints
 
-- **POST /shorten**  
+- **POST /cut**  
   Shortens a URL.  
   Request Body:  
   ```json
   {
-    "url": "https://example.com",  
+    "url": "https://example.com/something-here?maybe=here-too",  
   }
   ```
   Response:  
   ```json
   {
-    "shortened_url": "host.url/SHORTENED-URL"
+    "data": {
+      "shortened_url": "https://example.com/{slug}"
+    }
   }
   ```
 
@@ -93,12 +85,4 @@ cutlink/
 
 ## Deployment
 
-For production deployment, consider using a cloud platform like AWS with services like **Elastic Beanstalk**, **ECS**, or **Lambda**. Update environment variables accordingly.
-
-## Contributing
-
-Contributions are welcome! Please fork the repository, make your changes, and submit a pull request.
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+For production deployment, consider using a cloud platform like AWS with services like **Elastic Container Registry**, **Elastic Container Service**, or **Route53**, **AWS Amplify**, **AWS S3**.
