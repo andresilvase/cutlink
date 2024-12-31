@@ -1,4 +1,6 @@
 import 'package:cutlink/features/shorten/controller/shorten_controller.dart';
+import 'package:cutlink/core/admob/constants/ad_unit_ids.dart';
+import 'package:cutlink/core/admob/widgets/ad_banner.dart';
 import 'package:cutlink/core/widgets/blur.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,6 +21,7 @@ class _ShortenState extends State<Shorten> {
   @override
   initState() {
     title = "Paste your long URL here";
+
     super.initState();
   }
 
@@ -73,12 +76,15 @@ class _ShortenState extends State<Shorten> {
           replacement: const Blur(),
           child: ListView(
             children: [
-              SizedBox(height: Get.height / 2.5),
+              const AdBanner(adId: AdUnitIds.bannerTop),
+              SizedBox(height: Get.width * 0.3),
               _title(),
               _textField(),
               _shortenButton(),
               _copyButton(),
               _resetButton(),
+              const SizedBox(height: 16),
+              const AdBanner(adId: AdUnitIds.bannerBottom),
             ],
           ),
         ),
