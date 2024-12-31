@@ -3,10 +3,10 @@ package repository
 import (
 	"context"
 	"log/slog"
+	"os"
 
 	"math/rand"
 
-	"github.com/andresilvase/cutlink/internal"
 	apperrors "github.com/andresilvase/cutlink/internal/errors"
 	"github.com/redis/go-redis/v9"
 )
@@ -67,7 +67,9 @@ func (r repository) SaveShortenedURL(ctx context.Context, fullURL string) (strin
 		return "", err
 	}
 
-	return internal.BASE_URL + shortenedURL, nil
+	baseUrl := os.Getenv("SHORTEN_BASE_URL")
+
+	return baseUrl + shortenedURL, nil
 }
 
 func (r repository) FullURL(ctx context.Context, shortenedURL string) (string, error) {

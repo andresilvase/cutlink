@@ -1,7 +1,10 @@
 package api
 
 import (
+	"log"
 	"net/http"
+	"os"
+	"strings"
 
 	"github.com/andresilvase/cutlink/cmd/api/routes"
 	"github.com/go-chi/chi/v5"
@@ -16,8 +19,16 @@ func handler() http.Handler {
 	handler.Use(middleware.RequestID)
 	handler.Use(middleware.Logger)
 
+	allowedOriginsEnv := os.Getenv("ALLOWED_ORIGINS")
+
+	if allowedOriginsEnv == "" {
+		log.Fatal("ALLOWED_ORIGINS is not set in the environment")
+	}
+
+	allowedOrigins := strings.Split(allowedOriginsEnv, ",")
+
 	corsHandler := cors.New(cors.Options{
-		AllowedOrigins:   []string{"https://short.cutli.ink"},
+		AllowedOrigins:   allowedOrigins,
 		AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
 		AllowedHeaders:   []string{"Content-Type", "Authorization"},
 		AllowCredentials: true,

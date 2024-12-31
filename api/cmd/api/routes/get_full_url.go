@@ -5,14 +5,14 @@ import (
 	"fmt"
 	"log/slog"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/andresilvase/cutlink/cmd/api/utils"
-	"github.com/andresilvase/cutlink/internal"
 	"github.com/andresilvase/cutlink/internal/controller"
 	apperrors "github.com/andresilvase/cutlink/internal/errors"
 	"github.com/andresilvase/cutlink/internal/models"
-	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi"
 )
 
 func getFullURL(r *http.Request) string {
@@ -33,6 +33,7 @@ func FullURL(w http.ResponseWriter, r *http.Request) {
 	shortenedUrlParameter := chi.URLParam(r, "shortenedUrl")
 
 	fullURL, err := controller.FullURL(shortenedUrlParameter)
+	baseUrl := os.Getenv("SHORTEN_BASE_URL")
 
 	if err != nil {
 		statusCode := http.StatusInternalServerError
@@ -54,7 +55,7 @@ func FullURL(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(
 				w,
 				r,
-				fmt.Sprintf("%s%s", internal.BASE_URL, "not-found/"),
+				fmt.Sprintf("%s%s", baseUrl, "not-found/"),
 				http.StatusFound,
 			)
 		}
