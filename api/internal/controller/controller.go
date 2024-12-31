@@ -4,6 +4,7 @@ import (
 	"context"
 	"log/slog"
 	"net/url"
+	"strings"
 
 	apperrors "github.com/andresilvase/cutlink/internal/errors"
 	"github.com/andresilvase/cutlink/internal/repository"
@@ -15,8 +16,12 @@ var store = repository.New(
 )
 
 func isValideURL(fullURL string) bool {
-	parsedUrl, err := url.Parse(fullURL)
+	tempURL := fullURL
+	if !strings.Contains(tempURL, "://") {
+		tempURL = "http://" + tempURL
+	}
 
+	parsedUrl, err := url.Parse(tempURL)
 	return err == nil && parsedUrl.IsAbs()
 }
 

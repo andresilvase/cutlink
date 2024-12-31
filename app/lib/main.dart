@@ -1,4 +1,4 @@
-import 'package:get/get_connect/http/src/utils/utils.dart';
+import 'package:cutlink/core/theme/theme_controller.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cutlink/core/init_dependencies.dart';
@@ -20,7 +20,8 @@ void countAccess() {
 }
 
 Future<void> main() async {
-  await dotenv.load(fileName: ".env");
+  String envFile = kDebugMode ? 'env/.env.dev' : 'env/.env.prod';
+  await dotenv.load(fileName: envFile);
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
@@ -43,10 +44,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
-      onGenerateRoute: AppRouter.onGenerateroute,
-      debugShowCheckedModeBanner: false,
-      initialRoute: Routes.root,
-    );
+    final ThemeController themeController = Get.find();
+    themeController.initializeTheme();
+
+    return Obx(() {
+      return GetMaterialApp(
+        themeMode: themeController.isDarkMode.value ? ThemeMode.dark : ThemeMode.light,
+        onGenerateRoute: AppRouter.onGenerateroute,
+        debugShowCheckedModeBanner: false,
+        darkTheme: ThemeData.dark(),
+        initialRoute: Routes.root,
+        theme: ThemeData.light(),
+      );
+    });
   }
 }

@@ -33,9 +33,10 @@ class _ShortenState extends State<Shorten> {
       Get.snackbar(
         "Error",
         "Invalid URL",
+        duration: const Duration(seconds: 1),
         snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.red,
         margin: const EdgeInsets.all(16),
+        backgroundColor: Colors.red,
         colorText: Colors.white,
       );
     } else {
@@ -56,6 +57,12 @@ class _ShortenState extends State<Shorten> {
       margin: const EdgeInsets.all(16),
       colorText: Colors.white,
     );
+  }
+
+  void _reset() {
+    controller.reset();
+    _controller.text = "";
+    title = "Paste your long URL here";
   }
 
   @override
@@ -82,6 +89,7 @@ class _ShortenState extends State<Shorten> {
               _title(),
               _textField(),
               _shortenButton(),
+              _clearFieldButton(),
               _copyButton(),
               _resetButton(),
               const SizedBox(height: 16),
@@ -109,11 +117,16 @@ class _ShortenState extends State<Shorten> {
   }
 
   Color? fillColor() {
-    return controller.loading || controller.shortenedURL != null
-        ? Colors.grey[200]
-        : controller.hasError
-            ? Colors.red[100]
-            : null;
+    final brightness = Theme.of(context).brightness;
+    final isDarkMode = brightness == Brightness.dark;
+
+    if (controller.loading || controller.shortenedURL != null) {
+      return isDarkMode ? Colors.grey[800] : Colors.grey[200];
+    } else if (controller.hasError) {
+      return isDarkMode ? Colors.redAccent.withValues(alpha: 0.65) : Colors.red[100];
+    } else {
+      return null;
+    }
   }
 
   Widget _textField() {
@@ -153,7 +166,7 @@ class _ShortenState extends State<Shorten> {
   Widget _shortenButton() {
     return Obx(
       () => Visibility(
-        visible: controller.shortenedURL == null,
+        visible: controller.shortenedURL == null && !controller.hasError,
         child: Container(
           padding: const EdgeInsets.all(8.0),
           alignment: Alignment.center,
@@ -173,6 +186,36 @@ class _ShortenState extends State<Shorten> {
               ),
             ),
             child: const Text("Shorten", style: TextStyle(color: Colors.white, fontSize: 20)),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _clearFieldButton() {
+    return Obx(
+      () => Visibility(
+        visible: controller.hasError,
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: ElevatedButton.icon(
+            icon: const Icon(Icons.clear, color: Colors.white),
+            onPressed: _reset,
+            style: ButtonStyle(
+              backgroundColor: WidgetStateProperty.all(
+                Colors.blueAccent,
+              ),
+              shape: WidgetStateProperty.all(
+                RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
+              minimumSize: WidgetStateProperty.all(
+                Size(Get.width, 50),
+              ),
+            ),
+            label: const Text("Clear", style: TextStyle(color: Colors.white, fontSize: 20)),
           ),
         ),
       ),
@@ -224,11 +267,7 @@ class _ShortenState extends State<Shorten> {
           alignment: Alignment.center,
           child: ElevatedButton.icon(
             icon: const Icon(Icons.refresh, color: Colors.white),
-            onPressed: () {
-              controller.reset();
-              _controller.text = "";
-              title = "Paste your long URL here";
-            },
+            onPressed: _reset,
             style: ButtonStyle(
               backgroundColor: WidgetStateProperty.all(
                 Colors.redAccent,
