@@ -6,6 +6,7 @@ import (
 	"github.com/andresilvase/cutlink/cmd/api/routes"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/rs/cors"
 )
 
 func handler() http.Handler {
@@ -14,6 +15,14 @@ func handler() http.Handler {
 	handler.Use(middleware.Recoverer)
 	handler.Use(middleware.RequestID)
 	handler.Use(middleware.Logger)
+
+	corsHandler := cors.New(cors.Options{
+		AllowedOrigins:   []string{"https://short.cutli.ink"},
+		AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
+		AllowedHeaders:   []string{"Content-Type", "Authorization"},
+		AllowCredentials: true,
+	})
+	handler.Use(corsHandler.Handler)
 
 	handler.Route("/", func(r chi.Router) {
 		r.Get("/{shortenedUrl:[a-zA-Z0-9]+}", routes.FullURL)
