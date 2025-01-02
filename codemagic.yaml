@@ -32,7 +32,7 @@ workflows:
       - name: Set up local.properties
         working_directory: app
         script: |
-          echo "flutter.sdk=$HOME/programs/flutter" > "$CM_BUILD_DIR/android/local.properties"
+          echo "flutter.sdk=$HOME/programs/flutter" > "$CM_BUILD_DIR/app/android/local.properties"
       - name: Get Flutter packages
         working_directory: app
         script: |
