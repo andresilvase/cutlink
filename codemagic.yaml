@@ -49,10 +49,14 @@ workflows:
       - name: Take a look at Google-services.json File
         script: |
           echo $ANDROID_APP_GOOGLE_SERVICES_JSON | base64 --decode
-      - name: Build AAB with Flutter
+      - name: Flutter Clean
         working_directory: app
         script: |
-          LAST_BUILD_NUMBER=$(google-play get-latest-build-number --package-name $PACKAGE_NAME --tracks=$GOOGLE_PLAY_TRACK)
+          flutter clean
+      - name: Flutter Build App Bundle
+        working_directory: app
+        script: |
+          LAST_BUILD_NUMBER=$(google-play get-latest-build-number --package-name $PACKAGE_NAME --tracks=$GOOGLE_PLAY_TRACK)          
           flutter build appbundle --release \
           --dart-define=FIREBASE_OPTIONS_MESSAGING_SENDER_ID=$FIREBASE_OPTIONS_MESSAGING_SENDER_ID \
           --dart-define=FIREBASE_OPTIONS_ANDROID_API_KEY=$FIREBASE_OPTIONS_ANDROID_API_KEY \
