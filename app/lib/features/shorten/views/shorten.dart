@@ -71,7 +71,7 @@ class _ShortenState extends State<Shorten> {
       appBar: AppBar(
         backgroundColor: Colors.blueAccent,
         title: const Text(
-          "ShortCut Link",
+          kIsWeb ? "ShortCut Link" : "Cut Link",
           style: TextStyle(
             fontWeight: FontWeight.w700,
             color: Colors.white,
