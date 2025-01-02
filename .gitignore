@@ -4,3 +4,7 @@ only-redis-compose.yaml
 *.sh
 .vscode
 .env*
+
+# Firebase Config
+*google-services.json
+*firebase.json
