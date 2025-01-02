@@ -11,6 +11,8 @@ workflows:
     environment:
       android_signing:
         - upload-keystore
+      groups:
+        - google_play
       vars:
         PACKAGE_NAME: "com.anjasolutions.cutlink"
         GOOGLE_PLAY_TRACK: internal
