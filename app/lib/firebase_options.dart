@@ -16,7 +16,6 @@ import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb, Tar
 class DefaultFirebaseOptions {
   static const String messagingSenderId = String.fromEnvironment('FIREBASE_OPTIONS_MESSAGING_SENDER_ID');
   static const String androidApiKey = String.fromEnvironment('FIREBASE_OPTIONS_ANDROID_API_KEY');
-  static const String webAuthDomain = String.fromEnvironment('FIREBASE_OPTIONS_WEB_AUTH_DOMAIN');
   static const String androidAppId = String.fromEnvironment('FIREBASE_OPTIONS_ANDROID_APP_ID');
   static const String webApiKey = String.fromEnvironment('FIREBASE_OPTIONS_WEB_APP_KEY');
   static const String projectId = String.fromEnvironment('FIREBASE_OPTIONS_PROJECT_ID');
