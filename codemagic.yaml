@@ -24,6 +24,11 @@ workflows:
       - name: Generate Google-services.json File
         script: |
           echo $ANDROID_APP_GOOGLE_SERVICES_JSON | base64 --decode > android/app/google-services.json
+      - name: Set up app/build.gradle
+        script: |
+          #!/bin/sh
+          set -ex
+          printenv
       - name: Set up local.properties
         working_directory: app
         script: |
