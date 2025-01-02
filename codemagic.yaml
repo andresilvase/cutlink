@@ -25,15 +25,19 @@ workflows:
         script: |
           echo $ANDROID_APP_GOOGLE_SERVICES_JSON | base64 --decode > android/app/google-services.json
       - name: Set up local.properties
+        working_directory: app
         script: |
           echo "flutter.sdk=$HOME/programs/flutter" > "$CM_BUILD_DIR/android/local.properties"
       - name: Get Flutter packages
+        working_directory: app
         script: |
           flutter packages pub get
       - name: Set FlutterFire CLI
+        working_directory: app
         script: |
           dart pub global activate flutterfire_cli
       - name: Build AAB with Flutter
+        working_directory: app
         script: |
           LAST_BUILD_NUMBER=$(google-play get-latest-build-number --package-name $PACKAGE_NAME --tracks=$GOOGLE_PLAY_TRACK)          
           flutter build appbundle --release \
@@ -48,7 +52,6 @@ workflows:
           --build-number=$LAST_BUILD_NUMBER
     artifacts:
       - build/**/outputs/**/*.aab
-      # - build/**/outputs/apk/**/*.apk
       - build/**/outputs/**/mapping.txt
       - flutter_drive.log
     publishing:
