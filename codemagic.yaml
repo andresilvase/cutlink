@@ -41,6 +41,11 @@ workflows:
         working_directory: app
         script: |
           echo $VAR_ENV | base64 --decode > env/.env.prod
+      - name: Show Vars
+        script: |
+          #!/bin/sh
+          set -ex
+          printenv
       - name: Build AAB with Flutter
         working_directory: app
         script: |
