@@ -46,6 +46,9 @@ workflows:
           #!/bin/sh
           set -ex
           printenv
+      - name: Take a look at Google-services.json File
+        script: |
+          echo $ANDROID_APP_GOOGLE_SERVICES_JSON | base64 --decode
       - name: Build AAB with Flutter
         working_directory: app
         script: |
