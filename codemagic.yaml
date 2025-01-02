@@ -53,10 +53,6 @@ workflows:
         working_directory: app
         script: |
           flutter clean
-      - name: Retrieve Last Build from Google Play
-        working_directory: app
-        script: |
-          LAST_BUILD_NUMBER=$(google-play get-latest-build-number --package-name $PACKAGE_NAME --tracks=$GOOGLE_PLAY_TRACK)
       - name: Flutter Build App Bundle
         working_directory: app
         script: |
@@ -68,8 +64,8 @@ workflows:
           --dart-define=FIREBASE_OPTIONS_ANDROID_APP_ID=$FIREBASE_OPTIONS_ANDROID_APP_ID \
           --dart-define=FIREBASE_OPTIONS_WEB_APP_KEY=$FIREBASE_OPTIONS_WEB_APP_KEY \
           --dart-define=FIREBASE_OPTIONS_WEB_APP_ID=$FIREBASE_OPTIONS_WEB_APP_ID \
-          --build-name=1.0.0-$LAST_BUILD_NUMBER \
-          --build-number=$LAST_BUILD_NUMBER
+          --build-name=1.0.$PROJECT_BUILD_NUMBER \
+          --build-number=$PROJECT_BUILD_NUMBER
     artifacts:
       - build/**/outputs/**/*.aab
       - build/**/outputs/**/mapping.txt
