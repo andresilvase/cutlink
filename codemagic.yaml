@@ -57,6 +57,7 @@ workflows:
         working_directory: app
         script: |
           LAST_BUILD_NUMBER=$(google-play get-latest-build-number --package-name $PACKAGE_NAME --tracks=$GOOGLE_PLAY_TRACK)
+          NEW_RELEASE_NUMBER=$((LAST_BUILD_NUMBER + 1))
           flutter build appbundle --release \
           --dart-define=FIREBASE_OPTIONS_MESSAGING_SENDER_ID=$FIREBASE_OPTIONS_MESSAGING_SENDER_ID \
           --dart-define=FIREBASE_OPTIONS_ANDROID_API_KEY=$FIREBASE_OPTIONS_ANDROID_API_KEY \        
@@ -64,8 +65,8 @@ workflows:
           --dart-define=FIREBASE_OPTIONS_WEB_APP_KEY=$FIREBASE_OPTIONS_WEB_APP_KEY \
           --dart-define=FIREBASE_OPTIONS_PROJECT_ID=$FIREBASE_OPTIONS_PROJECT_ID \
           --dart-define=FIREBASE_OPTIONS_WEB_APP_ID=$FIREBASE_OPTIONS_WEB_APP_ID \
-          --build-name=1.0.$LAST_BUILD_NUMBER \
-          --build-number=$LAST_BUILD_NUMBER
+          --build-name=1.0.$NEW_RELEASE_NUMBER \
+          --build-number=$NEW_RELEASE_NUMBER
     artifacts:
       - build/**/outputs/**/*.aab
       - build/**/outputs/**/mapping.txt
