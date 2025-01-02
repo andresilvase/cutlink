@@ -2,6 +2,7 @@ definitions:
   scripts:
     - &generate_root_firebase_json
       name: Generate root Firebase.json file
+      working_directory: app
       script: |
         echo $ROOT_FIREBASE_JSON | base64 --decode > firebase.json
 workflows:
