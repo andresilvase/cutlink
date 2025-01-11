@@ -14,7 +14,7 @@ down:
 	docker-compose down
 
 run-local:
-	@go run cmd/main.go
+	docker-compose -f only-redis-compose.yaml up -d;go run cmd/main.go
 
 redis-kill:
 	@docker-compose -f only-redis-compose.yaml down
