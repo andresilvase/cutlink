@@ -38,11 +38,7 @@ class CutlinkService {
 
       return (true, response.data);
     } catch (exception) {
-      if (timedOut) {
-        return (false, 'Connection timeout');
-      }
-
-      return (false, exception);
+      return (false, 'Connection timeout');
     }
   }
 }
