@@ -8,3 +8,6 @@ only-redis-compose.yaml
 # Firebase Config
 *google-services.json
 *firebase.json
+
+# Lixo
+.DS_Store
