@@ -20,12 +20,10 @@ class CutlinkService {
     );
 
     Duration timeoutDuration = const Duration(seconds: 5);
-    bool timedOut = false;
+
     bool success = false;
 
     FutureOr<Response<dynamic>> onTimeout() {
-      timedOut = true;
-
       throw DioException.connectionTimeout(
         requestOptions: RequestOptions(path: ""),
         timeout: timeoutDuration,
