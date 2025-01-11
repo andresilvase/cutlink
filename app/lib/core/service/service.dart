@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:cutlink/core/model/full_url.dart';
 import 'package:dio/dio.dart';
@@ -17,8 +19,30 @@ class CutlinkService {
       ),
     );
 
-    final response = await dio.post("/cut", data: fullURL.toJson());
+    Duration timeoutDuration = const Duration(seconds: 5);
+    bool timedOut = false;
+    bool success = false;
 
-    return (true, response.data);
+    FutureOr<Response<dynamic>> onTimeout() {
+      timedOut = true;
+
+      throw DioException.connectionTimeout(
+        requestOptions: RequestOptions(path: ""),
+        timeout: timeoutDuration,
+        error: success,
+      );
+    }
+
+    try {
+      final response = await dio.post("/cut", data: fullURL.toJson()).timeout(timeoutDuration, onTimeout: onTimeout);
+
+      return (true, response.data);
+    } catch (exception) {
+      if (timedOut) {
+        return (false, 'Connection timeout');
+      }
+
+      return (false, exception);
+    }
   }
 }

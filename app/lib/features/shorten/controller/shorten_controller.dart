@@ -8,9 +8,11 @@ class ShortenController {
   final CutlinkService _service = CutlinkService();
   final RxBool _loading = false.obs;
   final RxBool _hasError = false.obs;
+  final RxString _errorMsg = ''.obs;
 
   String? get shortenedURL => _shortenedURL.value.data?.shortenedUrl;
   String? get errr => _shortenedURL.value.error;
+  String get errorMsg => _errorMsg.value;
   bool get hasError => _hasError.value;
   bool get loading => _loading.value;
 
@@ -24,7 +26,10 @@ class ShortenController {
   void setLoding() => _loading(true);
 
   void resetError() => _hasError(false);
-  void setError() => _hasError(true);
+  void setError([String? errorMsg]) {
+    _hasError(true);
+    _errorMsg(errorMsg ?? '');
+  }
 
   Future<void> shorten(String url) async {
     final RegExp regExp = RegExp(
@@ -48,6 +53,8 @@ class ShortenController {
         if (_shortenedURL.value.error != null) {
           setError();
         }
+      } else {
+        setError(response.$2.toString());
       }
     }
   }

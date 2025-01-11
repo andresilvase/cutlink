@@ -30,10 +30,11 @@ class _ShortenState extends State<Shorten> {
     await controller.shorten(_controller.text);
 
     if (controller.hasError) {
+      final String errorMsg = controller.errorMsg;
       Get.snackbar(
         "Error",
-        "Invalid URL",
-        duration: const Duration(seconds: 1),
+        errorMsg.isNotEmpty ? errorMsg : "Invalid URL",
+        duration: const Duration(seconds: 2),
         snackPosition: SnackPosition.TOP,
         margin: const EdgeInsets.all(16),
         backgroundColor: Colors.red,
